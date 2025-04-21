@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cool Hover Cards</title>
+<style>
+
+    .card {
+        background: #1e2a38;
+        color: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        padding: 20px;
+    }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+</style>
+
+<div class="container">
+    <div class="card">
+        <h3>Card One</h3>
+        <p>This is a cool hover card. It lifts and glows when hovered.</p>
+    </div>
+    <div class="card">
+        <h3>Card Two</h3>
+        <p>Use it for services, features, or even portfolio items.</p>
+    </div>
+    <div class="card">
+        <h3>Card Three</h3>
+        <p>Everything is fully responsive and cleanly designed.</p>
+    </div>
+</div>
+
+</html>

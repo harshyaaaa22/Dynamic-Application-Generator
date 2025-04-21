@@ -1,0 +1,42 @@
+﻿@model IEnumerable<DynamicAppGenerator.Models.Role>
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h2>Roles Management</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Role</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>@role.Description</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-info">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        No roles have been created yet. Please create at least one role.
+    </div>
+}
