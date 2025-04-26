@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - {{Namespace}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/LayoutStyles.css" asp-append-version="true" />
+</head>
+<body class="@(ViewContext.RouteData.Values["controller"].ToString() == "Account" ? "auth-page" : "")">
+    @if (ViewContext.RouteData.Values["controller"].ToString() != "Account")
+    {
+        <div class="material-layout">
+            <!-- Header with App Bar -->
+            <header class="app-bar">
+                <div class="app-bar-left">
+                    <button id="menuToggle" class="menu-toggle">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <h1 class="app-title">{{Namespace}}</h1>
+                </div>
+                <div class="app-bar-right">
+                    <div class="search-bar">
+                        <i class="material-icons">search</i>
+                        <input type="text" placeholder="Search..." />
+                    </div>
+                    <div class="user-profile-menu">
+
+                        <div class="user-dropdown">
+                            <button class="user-dropdown-toggle" id="userMenuToggle">
+                                <div class="user-avatar">
+                                    <span>U</span>
+                                </div>
+                                <span class="user-name d-none d-md-inline">@User.Identity.Name</span>
+                                <i class="material-icons">arrow_drop_down</i>
+                            </button>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <a href="#" class="dropdown-item">
+                                    <i class="material-icons">person</i>
+                                    <span>My Profile</span>
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <i class="material-icons">settings</i>
+                                    <span>Settings</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="material-icons">exit_to_app</i>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-container">
+                <!-- Side Navigation Drawer -->
+                <aside class="nav-drawer" id="navDrawer">
+                    <div class="nav-header">
+                        <div class="app-info">
+                            <div class="app-logo">
+                                <i class="material-icons">apps</i>
+                            </div>
+                            <h2>{{Namespace}}</h2>
+                        </div>
+                    </div>
+
+                    <nav class="drawer-nav">
+                        <ul>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
+                                    <i class="material-icons">home</i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="nav-link">
+                                    <i class="material-icons">security</i>
+                                    <span>Privacy</span>
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">dashboard</i>
+                                    <span>Dashboard</span>
+                                    <span class="badge badge-primary">New</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">analytics</i>
+                                    <span>Analytics</span>
+                                </a>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">description</i>
+                                    <span>Reports</span>
+                                    <i class="material-icons submenu-icon">expand_more</i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="#"><span>Monthly Reports</span></a></li>
+                                    <li><a href="#"><span>Annual Reports</span></a></li>
+                                    <li><a href="#"><span>Custom Reports</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">people</i>
+                                    <span>Users</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">settings</i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <!-- User profile card in sidebar -->
+                    <div class="sidebar-profile">
+                        <div class="sidebar-profile-info">
+                            <div class="user-avatar">U</div>
+                            <div class="user-info">
+                                <h5>@User.Identity.Name</h5>
+                                <span>User Role</span>
+                            </div>
+                        </div>
+                        <div class="sidebar-profile-actions">
+                            <a href="#" title="Settings"><i class="material-icons">settings</i></a>
+                            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="icon-button" title="Logout">
+                                    <i class="material-icons">exit_to_app</i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="content-header">
+                        <h2>@ViewData["Title"]</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="content-body">
+                        @RenderBody()
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="material-footer">
+                <div class="container">
+                    <p>&copy; @DateTime.Now.Year - {{Namespace}} | <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> | <a href="#">Terms</a></p>
+                </div>
+            </footer>
+        </div>
+    }
+    else
+    {
+        <div class="auth-container">
+            <div class="auth-logo">
+                <div class="app-logo">
+                    <i class="material-icons">apps</i>
+                </div>
+                <h2>{{Namespace}}</h2>
+            </div>
+            <div class="auth-title">
+                <h1>@ViewData["Title"]</h1>
+                <p>Enter your credentials to access your account</p>
+            </div>
+            @RenderBody()
+        </div>
+    }
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function() {
+            // Add active class to current page in navigation
+            const currentController = '@ViewContext.RouteData.Values["controller"]';
+            const currentAction = '@ViewContext.RouteData.Values["action"]';
+
+            $('.drawer-nav .nav-item a.nav-link').each(function() {
+                const href = $(this).attr('href');
+                if (href && (
+                    href.includes(`/${currentController}/${currentAction}`) ||
+                    (currentAction === 'Index' && href.endsWith(`/${currentController}`))
+                )) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            });
+
+            // Menu toggle functionality
+            $('#menuToggle').click(function() {
+                $('.material-layout').toggleClass('drawer-open');
+            });
+
+            // User dropdown toggle
+            $('#userMenuToggle').click(function(e) {
+                e.stopPropagation();
+                $('#userDropdownMenu').toggleClass('show');
+            });
+
+            // Close dropdown when clicking elsewhere
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.user-dropdown').length) {
+                    $('#userDropdownMenu').removeClass('show');
+                }
+            });
+
+            // Submenu toggle functionality
+            $('.has-submenu > .nav-link').click(function(e) {
+                e.preventDefault();
+                $(this).parent().toggleClass('open');
+                $(this).find('.submenu-icon').text(
+                    $(this).parent().hasClass('open') ? 'expand_less' : 'expand_more'
+                );
+                $(this).next('.submenu').slideToggle(300);
+            });
+
+            // Close drawer when clicking outside on mobile
+            $('.main-content').on('click', function() {
+                if ($(window).width() < 992 && $('.material-layout').hasClass('drawer-open')) {
+                    $('.material-layout').removeClass('drawer-open');
+                }
+            });
+
+            // Automatic drawer behavior based on screen size
+            function handleResize() {
+                if ($(window).width() >= 992) {
+                    $('.material-layout').addClass('drawer-open');
+                } else {
+                    $('.material-layout').removeClass('drawer-open');
+                }
+            }
+
+            // Initial call and resize event
+            handleResize();
+            $(window).resize(handleResize);
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

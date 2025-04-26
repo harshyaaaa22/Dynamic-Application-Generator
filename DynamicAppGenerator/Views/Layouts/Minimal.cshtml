@@ -1,0 +1,411 @@
+﻿@{
+    ViewData["Title"] = "Minimal Layout";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Minimal</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/LayoutStyles.css" asp-append-version="true" />
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --sidebar-bg: #ffffff;
+            --top-navbar-height: 70px;
+            --primary-color: #344767;
+            --secondary-color: #f8f9fa;
+            --text-color: #344767;
+            --text-light: #7b809a;
+            --border-color: #e9ecef;
+            --active-color: #3a416f;
+            --online-color: #38d39f;
+            --offline-color: #a0aec0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-bg);
+            position: fixed;
+            height: 100vh;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: all 0.3s;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+            .sidebar-header i {
+                font-size: 20px;
+                margin-right: 10px;
+            }
+
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+
+            .sidebar-menu ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar-menu li {
+                margin: 5px 0;
+            }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+            .menu-item i {
+                margin-right: 10px;
+                width: 20px;
+                text-align: center;
+            }
+
+            .menu-item:hover {
+                background-color: rgba(58, 65, 111, 0.1);
+                color: var(--active-color);
+                text-decoration: none;
+            }
+
+            .menu-item.active {
+                background-color: var(--active-color);
+                color: white;
+                box-shadow: 0 4px 6px rgba(58, 65, 111, 0.3);
+            }
+
+        .sidebar-divider {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            padding: 15px 20px 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navbar Styles */
+        .top-navbar {
+            height: var(--top-navbar-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+        }
+
+            .breadcrumb a {
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+            }
+
+        .navbar-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            margin-right: 15px;
+        }
+
+            .search-bar input {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                font-size: 14px;
+            }
+
+        .sign-in-button .btn {
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: 500;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            padding: 20px;
+            height: calc(100vh - var(--top-navbar-height));
+            overflow-y: auto;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-online {
+            background-color: rgba(56, 211, 159, 0.2);
+            color: var(--online-color);
+        }
+
+        .status-offline {
+            background-color: rgba(160, 174, 192, 0.2);
+            color: var(--offline-color);
+        }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 991px) {
+            .sidebar
+
+        {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .main-content {
+            margin-left: 0;
+        }
+
+        .menu-toggle {
+            display: block;
+        }
+
+        }
+
+        /* Table Styles */
+        .table-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-body {
+            padding-top: 15px;
+        }
+
+        .table-row {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-col {
+            padding: 0 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        /* Edit Button */
+        .edit-button {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+            .edit-button:hover {
+                color: var(--active-color);
+            }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-cube"></i>
+                <span>Minimal</span>
+            </div>
+
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Dashboard" class="menu-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Tables" class="menu-item">
+                            <i class="fas fa-table"></i>
+                            <span>Tables</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Billing" class="menu-item">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Billing</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="VirtualReality" class="menu-item">
+                            <i class="fas fa-vr-cardboard"></i>
+                            <span>Virtual Reality</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="RTL" class="menu-item">
+                            <i class="fas fa-align-right"></i>
+                            <span>RTL</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-divider">ACCOUNT PAGES</div>
+
+                <ul>
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="Profile" class="menu-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="menu-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Sign In</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="SignUp" class="menu-item">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Sign Up</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Top Navigation Bar -->
+            <nav class="top-navbar">
+                <div class="breadcrumb">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">Pages</a> /
+                    <span>@ViewContext.RouteData.Values["action"]</span>
+                </div>
+                <div class="navbar-title">
+                    @ViewContext.RouteData.Values["action"]
+                </div>
+                <div class="navbar-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Type here..." />
+                    </div>
+                    <div class="sign-in-button">
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="btn btn-light">Sign In</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="content-wrapper">
+            
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+   
+
+    <script>
+        // Add active class to current nav item
+        $(document).ready(function() {
+            var currentController = '@ViewContext.RouteData.Values["controller"]';
+            var currentAction = '@ViewContext.RouteData.Values["action"]';
+
+            $('.menu-item').each(function() {
+                var href = $(this).attr('href');
+                if (href && href.indexOf(currentController) >= 0 && href.indexOf(currentAction) >= 0) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

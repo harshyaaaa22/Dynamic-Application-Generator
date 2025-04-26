@@ -12,7 +12,6 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #f5f7fa;
     transition: background-color var(--transition-speed);
-    padding-top: 70px;
     overflow-x: hidden;
 }
 

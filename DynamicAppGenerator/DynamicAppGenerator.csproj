@@ -10,6 +10,7 @@
     <Folder Include="Templates\Controllers\" />
     <Folder Include="Templates\Models\" />
     <Folder Include="Templates\Scripts\" />
+    <Folder Include="Views\Generator\" />
   </ItemGroup>
 
   <ItemGroup>

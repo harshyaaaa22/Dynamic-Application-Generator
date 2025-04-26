@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews();
 
 // Register database connection
 builder.Services.AddSingleton<DatabaseConnection>();
-
+builder.Services.AddScoped<LayoutsService>();
 // Register repositories
 builder.Services.AddScoped<RoleRepository>();
 

@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - {{Namespace}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/LayoutStyles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-cube"></i>
+                <span>{{Namespace}}</span>
+            </div>
+
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Dashboard" class="menu-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Tables" class="menu-item">
+                            <i class="fas fa-table"></i>
+                            <span>Tables</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Billing" class="menu-item">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Billing</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="VirtualReality" class="menu-item">
+                            <i class="fas fa-vr-cardboard"></i>
+                            <span>Virtual Reality</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="RTL" class="menu-item">
+                            <i class="fas fa-align-right"></i>
+                            <span>RTL</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-divider">ACCOUNT PAGES</div>
+
+                <ul>
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="Profile" class="menu-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="menu-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Sign In</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="SignUp" class="menu-item">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Sign Up</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Top Navigation Bar -->
+            <nav class="top-navbar">
+                <div class="breadcrumb">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">Pages</a> /
+                    <span>@ViewContext.RouteData.Values["action"]</span>
+                </div>
+                <div class="navbar-title">
+                    @ViewContext.RouteData.Values["action"]
+                </div>
+                <div class="navbar-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Type here..." />
+                    </div>
+                    <div class="sign-in-button">
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="btn btn-light">Sign In</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="content-wrapper">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // Add active class to current nav item
+        $(document).ready(function() {
+            var currentController = '@ViewContext.RouteData.Values["controller"]';
+            var currentAction = '@ViewContext.RouteData.Values["action"]';
+
+            $('.menu-item').each(function() {
+                var href = $(this).attr('href');
+                if (href && href.indexOf(currentController) >= 0 && href.indexOf(currentAction) >= 0) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

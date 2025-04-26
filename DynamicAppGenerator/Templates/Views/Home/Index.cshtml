@@ -38,11 +38,7 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+
 
         .logo {
             font-size: 1.8rem;
@@ -144,12 +140,18 @@
 
         .hero-image {
             position: absolute;
-            right: -5%;
-            top: 50%;
-            transform: translateY(-50%);
+            right: 20%;
+            top: 40%;
+            transform: translateY(-20%);
             width: 55%;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
+        }
+
+        @@media (max-width: 1024px) {
+            .hero-image {
+                display: none;
+            }
         }
 
         .shape-1 {
@@ -515,11 +517,10 @@
             .hero h1 {
                 font-size: 3rem;
             }
-
-            .hero-image {
-                width: 45%;
-                right: 0;
-            }
+            /*  .hero-image {
+                                width: 45%;
+                                right: 0;
+                            } */
 
             .features-container {
                 flex-direction: column;
@@ -548,15 +549,14 @@
                 .hero h1 {
                     font-size: 2.5rem;
                 }
+            /*  .hero-image {
 
-            .hero-image {
-                position: relative;
-                width: 90%;
-                margin-top: 3rem;
-                transform: none;
-                right: auto;
-                top: auto;
-            }
+                                width: 90%;
+                                margin-top: 3rem;
+                                transform: none;
+                                right: auto;
+                                top: auto;
+                            } */
 
             .hero-content {
                 text-align: center;
@@ -594,14 +594,14 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1>Create Impactful Digital Experiences</h1>
+            <h1>Create Projects Faster. Smarter. Easier.</h1>
             <p>We help forward-thinking businesses achieve their goals through innovative design and cutting-edge technology solutions.</p>
             <div class="hero-buttons">
                 <a href="#services" class="btn-primary">Explore Services</a>
                 <a href="#contact" class="btn-secondary">Contact Us</a>
             </div>
         </div>
-        <img src="https://www.pngplay.com/wp-content/uploads/13/Software-IT-Services-Transparent-PNG.png" alt="Digital Solutions Illustration" class="hero-image">
+        <img src="https://www.pngplay.com/wp-content/uploads/13/Software-IT-Services-Transparent-PNG.png" alt="Digital Solutions Illustration" class="hero-image" style="width:500px;height:400px;">
         <div class="shape-1"></div>
         <div class="shape-2"></div>
     </section>
@@ -650,7 +650,7 @@
     <section class="features" id="features">
         <div class="features-container">
             <div class="features-image">
-                <img src="/api/placeholder/600/450" alt="Features Illustration">
+                <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-1044-6230-9a38-15a71d5a5a08/raw?se=2025-04-22T06%3A24%3A40Z&sp=r&sv=2024-08-04&sr=b&scid=a7a9cd24-c97f-596b-a41a-83de27348244&skoid=acefdf70-07fd-4bd5-a167-a4a9b137d163&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-22T04%3A30%3A28Z&ske=2025-04-23T04%3A30%3A28Z&sks=b&skv=2024-08-04&sig=OHiQoa/%2BRNbEAPT0o3tB58h2nDO0H%2BQrlbhn6t8IpbI%3D" alt="Features Illustration">
             </div>
 
             <div class="features-content">

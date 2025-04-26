@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Modern</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/layoutstyles.css" rel="stylesheet" />
+   
+</head>
+<body class="@(ViewContext.RouteData.Values["controller"].ToString() == "Account" ? "auth-page" : "")">
+    @if (ViewContext.RouteData.Values["controller"].ToString() != "Account")
+    {
+        <div class="app-container">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <a class="brand-logo" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-cube"></i>
+                        <span class="link-text">Modern</span>
+                    </a>
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home"></i>
+                            <span class="link-text">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Features" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Features">
+                            <i class="fas fa-star"></i>
+                            <span class="link-text">Features</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="About">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="link-text">About</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Contact">
+                            <i class="fas fa-envelope"></i>
+                            <span class="link-text">Contact</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Privacy" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Privacy">
+                            <i class="fas fa-shield-alt"></i>
+                            <span class="link-text">Privacy</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Top App Bar -->
+                <header class="app-bar">
+                    <div class="app-bar-left">
+                        <button class="action-btn mobile-menu-toggle" id="mobileMenuToggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="app-bar-title">@ViewData["Title"]</div>
+                    </div>
+                    <div class="app-bar-actions">
+                        <button class="action-btn" id="searchToggle">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="action-btn" id="notificationToggle">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        <div class="theme-toggle" id="themeToggle">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="user-menu">
+                            <button class="user-trigger" id="userMenuToggle">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span class="user-name">User</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="user-dropdown" id="userDropdown">
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-user-circle"></i>
+                                    Profile
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Content Area -->
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+
+                <!-- Footer -->
+                <footer class="app-footer">
+                    <div>&copy; @DateTime.Now.Year -Modern - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="auth-link">Privacy</a></div>
+                </footer>
+            </div>
+
+            <!-- Mobile Overlay -->
+            <div class="mobile-overlay" id="mobileOverlay"></div>
+        </div>
+    }
+    else
+    {
+        <div class="auth-container">
+            <div class="auth-card fade-in">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fas fa-cube"></i> Modern
+                    </div>
+                    <h4>@ViewData["Title"]</h4>
+                </div>
+                @RenderBody()
+                <div class="auth-footer">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="auth-link">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar Toggle
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+
+                // Update toggle icon
+                const icon = sidebarToggle.querySelector('i');
+                if (sidebar.classList.contains('collapsed')) {
+                    icon.classList.remove('fa-chevron-left');
+                    icon.classList.add('fa-chevron-right');
+                } else {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-left');
+                }
+            });
+
+            // Mobile menu toggle
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                });
+            }
+
+            // Close mobile menu when clicking on overlay
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    mobileOverlay.classList.remove('active');
+                });
+            }
+
+            // Dark mode toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.classList.add('dark');
+            }
+
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                themeToggle.classList.toggle('dark');
+
+                // Save theme preference
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // User dropdown
+            const userMenuToggle = document.getElementById('userMenuToggle');
+            const userDropdown = document.getElementById('userDropdown');
+
+            if (userMenuToggle && userDropdown) {
+                userMenuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('show');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userMenuToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            // Notification & Search toggles
+            const notificationToggle = document.getElementById('notificationToggle');
+            const searchToggle = document.getElementById('searchToggle');
+
+            if (notificationToggle) {
+                notificationToggle.addEventListener('click', function() {
+                    M.toast({html: 'Notifications feature coming soon!', classes: 'rounded'});
+                });
+            }
+
+            if (searchToggle) {
+                searchToggle.addEventListener('click', function() {
+                    M.toast({html: 'Search feature coming soon!', classes: 'rounded'});
+                });
+            }
+
+            // Initialize Materialize components
+            M.AutoInit();
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

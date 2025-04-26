@@ -68,6 +68,9 @@ namespace DynamicAppGenerator.Services
             sb.AppendLine("                <input type=\"submit\" value=\"Register\" class=\"btn btn-primary\" />");
             sb.AppendLine("            </div>");
             sb.AppendLine("        </form>");
+
+
+
             sb.AppendLine("    </div>");
             sb.AppendLine("</div>");
 
