@@ -1,0 +1,58 @@
+﻿@using DynamicAppGenerator.Services
+@model List<LayoutTemplate>
+@{
+    ViewData["Title"] = "Layout Editor";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Layout Editor</h1>
+        <a asp-action="Create" class="btn btn-primary">Create New Layout</a>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["Message"]
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var layout in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">@layout.Name</h5>
+                        @if (layout.IsCustom)
+                        {
+                            <span class="badge badge-success">Custom</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary">Built-in</span>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <p>@layout.Description</p>
+                        <div class="text-center mb-3">
+                            <img src="/images/Layouts/@(layout.Id)-preview.png" alt="@layout.Name preview"
+                                 class="img-fluid border" style="max-height: 150px;"
+                                 onerror="this.src='https://miro.medium.com/v2/resize:fit:2000/1*nLYjYHwH3ELi3TMfEIcJvg.png'">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group w-100">
+                            <a asp-action="Preview" asp-route-id="@layout.Id" class="btn btn-outline-primary">Preview</a>
+                            <a asp-action="Edit" asp-route-id="@layout.Id" class="btn btn-outline-secondary">
+                                @(layout.IsCustom ? "Edit" : "Clone")
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

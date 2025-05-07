@@ -3,15 +3,26 @@ using DynamicAppGenerator.Data;
 using DynamicAppGenerator.Repositories;
 using DynamicAppGenerator.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+// Register services
+builder.Services.AddScoped<LayoutsService>();
+builder.Services.AddScoped<LayoutEditorService>();
+builder.Services.AddScoped<GeneratorService>();
 // Register database connection
 builder.Services.AddSingleton<DatabaseConnection>();
 builder.Services.AddScoped<LayoutsService>();

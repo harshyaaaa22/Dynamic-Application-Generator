@@ -1,0 +1,68 @@
+﻿/* Styles for Layout Editor */
+.CodeMirror {
+    border: 1px solid #ddd;
+    height: auto;
+    margin-bottom: 20px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+}
+
+.cm-s-monokai .CodeMirror-gutters {
+    background-color: #272822;
+}
+
+.editor-toolbar {
+    margin-bottom: 10px;
+    padding: 5px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+    .editor-toolbar button {
+        margin-right: 5px;
+    }
+
+.nav-tabs .nav-link {
+    font-weight: 500;
+}
+
+.tab-content {
+    border: 1px solid #dee2e6;
+    border-top: none;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.layout-preview-container {
+    max-height: 300px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.badge-custom {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-builtin {
+    background-color: #6c757d;
+    color: white;
+}
+
+.layout-card {
+    height: 100%;
+    transition: transform 0.2s;
+}
+
+    .layout-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+.layout-thumbnail {
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}

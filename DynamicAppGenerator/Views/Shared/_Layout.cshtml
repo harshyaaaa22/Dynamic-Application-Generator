@@ -1,51 +1,916 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DynamicAppGenerator</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DynamicAppGenerator.styles.css" asp-append-version="true" />
-    
-    
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DynamicAppGenerator</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <title>@ViewData["Title"] - Project Builder</title>
+    <link rel="icon" type="image/png" href="https://png.pngtree.com/png-vector/20220526/ourmid/pngtree-online-registration-or-sign-up-login-for-account-on-smartphone-app-png-image_4740861.png" />
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - DynamicAppGenerator - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/LayoutStyles.css" asp-append-version="true" />
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-gradient: linear-gradient(to right, #6366f1, #8b5cf6);
+            --primary-variant: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-variant: #059669;
+            --background: #f9fafb;
+            --surface: #ffffff;
+            --surface-variant: #f3f4f6;
+            --error: #ef4444;
+            --on-primary: #ffffff;
+            --on-secondary: #ffffff;
+            --on-background: #111827;
+            --on-surface: #1f2937;
+            --on-error: #ffffff;
+            --drawer-width: 280px;
+            --app-bar-height: 70px;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --box-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--on-background);
+            line-height: 1.6;
+        }
+
+        .material-layout {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* App Bar / Header */
+        .app-bar {
+            background: var(--primary-gradient);
+            color: var(--on-primary);
+            height: var(--app-bar-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1100;
+            box-shadow: var(--box-shadow);
+        }
+
+        .app-bar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--on-primary);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            transition: all var(--transition-speed);
+        }
+
+            .menu-toggle:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                transform: scale(1.05);
+            }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .app-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-bar {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            padding: 6px 16px;
+            transition: all var(--transition-speed);
+            width: 240px;
+        }
+
+            .search-bar:hover, .search-bar:focus-within {
+                background-color: rgba(255, 255, 255, 0.25);
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+            }
+
+            .search-bar i {
+                margin-right: 8px;
+            }
+
+            .search-bar input {
+                background: transparent;
+                border: none;
+                color: var(--on-primary);
+                outline: none;
+                width: 100%;
+                font-size: 14px;
+            }
+
+                .search-bar input::placeholder {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+        /* User Menu / Profile Styling */
+        .user-profile-menu {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+            .user-profile-menu a,
+            .user-profile-menu button.btn-link {
+                color: var(--on-primary);
+                text-decoration: none;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.1);
+                transition: all var(--transition-speed);
+                border: none;
+            }
+
+                .user-profile-menu a:hover,
+                .user-profile-menu button.btn-link:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                    transform: translateY(-1px);
+                }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-dropdown {
+            position: relative;
+            margin-left: 8px;
+        }
+
+        .user-dropdown-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 24px;
+            color: var(--on-primary);
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+            .user-dropdown-toggle:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+        .user-name {
+            margin: 0 8px;
+            font-weight: 500;
+        }
+
+        .user-dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            width: 220px;
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-hover);
+            padding: 8px 0;
+            z-index: 1200;
+            transform-origin: top right;
+            transform: scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .user-dropdown-menu.show {
+                transform: scale(1);
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            color: var(--on-surface);
+            text-decoration: none;
+            transition: background-color 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+            .dropdown-item:hover {
+                background-color: var(--surface-variant);
+            }
+
+            .dropdown-item i {
+                margin-right: 12px;
+                font-size: 20px;
+                color: rgba(0, 0, 0, 0.6);
+            }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 8px 0;
+        }
+
+        /* Content container */
+        .content-container {
+            display: flex;
+            flex: 1;
+            margin-top: var(--app-bar-height);
+        }
+
+        /* Navigation Drawer */
+        .nav-drawer {
+            width: var(--drawer-width);
+            background-color: var(--surface);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: var(--app-bar-height);
+            left: 0;
+            bottom: 0;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform var(--transition-speed) ease;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .drawer-open .nav-drawer {
+            transform: translateX(0);
+        }
+
+        .nav-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .app-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .app-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+        }
+
+            .app-logo i {
+                font-size: 24px;
+            }
+
+        .app-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .drawer-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0;
+        }
+
+            .drawer-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .drawer-nav .nav-item {
+                margin: 4px 16px;
+            }
+
+                .drawer-nav .nav-item .nav-link {
+                    display: flex;
+                    align-items: center;
+                    padding: 12px 16px;
+                    color: var(--on-surface);
+                    text-decoration: none;
+                    transition: all var(--transition-speed);
+                    border-radius: var(--border-radius);
+                    font-weight: 500;
+                    position: relative;
+                }
+
+                    .drawer-nav .nav-item .nav-link:hover {
+                        background-color: var(--surface-variant);
+                        transform: translateX(4px);
+                    }
+
+                    .drawer-nav .nav-item .nav-link.active {
+                        background-color: rgba(99, 102, 241, 0.1);
+                        color: var(--primary-color);
+                        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+                    }
+
+                .drawer-nav .nav-item i {
+                    margin-right: 16px;
+                    color: rgba(0, 0, 0, 0.5);
+                    transition: all var(--transition-speed);
+                }
+
+                    .drawer-nav .nav-item i.submenu-icon {
+                        margin-left: auto;
+                        margin-right: 0;
+                        font-size: 20px;
+                    }
+
+                .drawer-nav .nav-item .nav-link:hover i {
+                    color: var(--primary-color);
+                }
+
+                .drawer-nav .nav-item .nav-link.active i {
+                    color: var(--primary-color);
+                }
+
+        /* Submenu styling */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 0 20px;
+        }
+
+            .submenu li a {
+                display: flex;
+                align-items: center;
+                padding: 10px 16px 10px 36px;
+                color: var(--on-surface);
+                text-decoration: none;
+                transition: all var(--transition-speed);
+                border-radius: var(--border-radius);
+                font-weight: 400;
+                position: relative;
+            }
+
+                .submenu li a:hover {
+                    background-color: var(--surface-variant);
+                    color: var(--primary-color);
+                }
+
+                .submenu li a:before {
+                    content: '';
+                    position: absolute;
+                    left: 16px;
+                    top: 50%;
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background-color: var(--primary-color);
+                    opacity: 0.5;
+                    transform: translateY(-50%);
+                }
+
+        .has-submenu.open > .nav-link {
+            background-color: var(--surface-variant);
+            color: var(--primary-color);
+        }
+
+            .has-submenu.open > .nav-link i {
+                color: var(--primary-color);
+            }
+
+        /* Sidebar profile section */
+        .sidebar-profile {
+            padding: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: auto;
+            background-color: var(--surface-variant);
+            border-radius: 0 0 var(--border-radius) 0;
+        }
+
+        .sidebar-profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+            .sidebar-profile-info .user-avatar {
+                margin-right: 12px;
+                width: 40px;
+                height: 40px;
+            }
+
+        .user-info {
+            overflow: hidden;
+        }
+
+            .user-info h5 {
+                margin: 0;
+                font-size: 14px;
+                font-weight: 600;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .user-info span {
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.6);
+            }
+
+        .sidebar-profile-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .sidebar-profile-actions a,
+            .sidebar-profile-actions .icon-button {
+                color: var(--on-surface);
+                background: var(--surface);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all var(--transition-speed);
+                border: none;
+                cursor: pointer;
+            }
+
+                .sidebar-profile-actions a:hover,
+                .sidebar-profile-actions .icon-button:hover {
+                    background: var(--primary-color);
+                    color: var(--on-primary);
+                    transform: translateY(-2px);
+                }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .drawer-open .main-content {
+            margin-left: var(--drawer-width);
+            width: calc(100% - var(--drawer-width));
+        }
+
+        .content-header {
+            padding: 24px 32px;
+            background-color: var(--surface);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+            .content-header h2 {
+                font-size: 1.8rem;
+                font-weight: 600;
+                margin: 0;
+                color: var(--on-surface);
+                position: relative;
+            }
+
+                .content-header h2:after {
+                    content: '';
+                    position: absolute;
+                    bottom: -8px;
+                    left: 0;
+                    width: 60px;
+                    height: 4px;
+                    background: var(--primary-gradient);
+                    border-radius: 2px;
+                }
+
+        /* Breadcrumb styling */
+        .breadcrumb {
+            background-color: transparent;
+            padding: 8px 0 0;
+            margin: 8px 0 0;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: var(--primary-color);
+            content: "❯";
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+            .breadcrumb-item a:hover {
+                text-decoration: underline;
+            }
+
+        .breadcrumb-item.active {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .content-body {
+            padding: 0 32px 32px;
+            flex: 1;
+        }
+
+        .content-card {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all var(--transition-speed);
+        }
+
+            .content-card:hover {
+                box-shadow: var(--box-shadow-hover);
+                transform: translateY(-2px);
+            }
+
+        /* Footer */
+        .material-footer {
+            background-color: var(--surface);
+            padding: 24px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+            color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+            .material-footer a {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color var(--transition-speed);
+            }
+
+                .material-footer a:hover {
+                    color: var(--primary-variant);
+                    text-decoration: underline;
+                }
+
+        /* UI Elements & Animations */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-color);
+            color: var(--on-primary);
+        }
+
+        .badge-secondary {
+            background-color: var(--secondary-color);
+            color: var(--on-secondary);
+        }
+
+        .menu-toggle .material-icons {
+            transition: transform 0.5s ease;
+        }
+
+        .drawer-open .menu-toggle .material-icons {
+            transform: rotate(90deg);
+        }
+
+        .drawer-nav .nav-item .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .drawer-nav .nav-item .nav-link:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                height: 3px;
+                width: 0;
+                background: var(--primary-gradient);
+                transition
+
+    </style>
+</head>
+<body class="@(ViewContext.RouteData.Values["controller"].ToString() == "Account" ? "auth-page" : "")">
+    @if (ViewContext.RouteData.Values["controller"].ToString() != "Account")
+    {
+        <div class="material-layout">
+            <!-- Header with App Bar -->
+            <header class="app-bar">
+                <div class="app-bar-left">
+                    <button id="menuToggle" class="menu-toggle">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <h1 class="app-title">MaterialTheme</h1>
+                </div>
+                <div class="app-bar-right">
+                    <div class="search-bar">
+                        <i class="material-icons">search</i>
+                        <input type="text" placeholder="Search..." />
+                    </div>
+                    <div class="user-profile-menu">
+
+                        <div class="user-dropdown">
+                            <button class="user-dropdown-toggle" id="userMenuToggle">
+                                <div class="user-avatar">
+                                    <span>U</span>
+                                </div>
+                                <span class="user-name d-none d-md-inline">@User.Identity.Name</span>
+                                <i class="material-icons">arrow_drop_down</i>
+                            </button>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <a href="#" class="dropdown-item">
+                                    <i class="material-icons">person</i>
+                                    <span>My Profile</span>
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <i class="material-icons">settings</i>
+                                    <span>Settings</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="material-icons">exit_to_app</i>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-container">
+                <!-- Side Navigation Drawer -->
+                <aside class="nav-drawer" id="navDrawer">
+                    <div class="nav-header">
+                        <div class="app-info">
+                            <div class="app-logo">
+                                <i class="material-icons">apps</i>
+                            </div>
+                            <h2>MaterialTheme</h2>
+                        </div>
+                    </div>
+
+                    <nav class="drawer-nav">
+                        <ul>
+                          <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">dashboard</i>
+                                    <span>Dashboard</span>
+                                    <span class="badge badge-primary">New</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
+                                    <i class="material-icons">home</i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Role" asp-action="Index" class="nav-link">
+                                    <i class="material-icons">people</i>
+                                    <span>UserRole</span>
+                                </a>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a href="/LayoutEditor/Index" class="nav-link">
+                                    <i class="material-icons">palette</i>
+                                    <span>custom ui</span>
+                                    <i class="material-icons submenu-icon">expand_more</i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="/LayoutEditor/Index"><span>Create UI</span></a></li>
+
+
+
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Generator" asp-action="Index" class="nav-link">
+                                    <i class="material-icons">build</i>
+                                    <span>Build Project</span>
+                                </a>
+                            </li>
+
+                          
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">analytics</i>
+                                    <span>Analytics</span>
+                                </a>
+                            </li>
+                          
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">people</i>
+                                    <span>Users</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="material-icons">settings</i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <!-- User profile card in sidebar -->
+                    <div class="sidebar-profile">
+                        <div class="sidebar-profile-info">
+                            <div class="user-avatar">U</div>
+                            <div class="user-info">
+                                <h5>@User.Identity.Name</h5>
+                                <span>User Role</span>
+                            </div>
+                        </div>
+                        <div class="sidebar-profile-actions">
+                            <a href="#" title="Settings"><i class="material-icons">settings</i></a>
+                            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="icon-button" title="Logout">
+                                    <i class="material-icons">exit_to_app</i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="content-header">
+                        <h2>@ViewData["Title"]</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="container">
+                        <main role="main" class="pb-3">
+
+                            @RenderBody()
+                        </main>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="material-footer">
+                <div class="container">
+                    <p>&copy; @DateTime.Now.Year - MaterialTheme | <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> | <a href="#">Terms</a></p>
+                </div>
+            </footer>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    }
+    else
+    {
+        <div class="auth-container">
+            <div class="auth-logo">
+                <div class="app-logo">
+                    <i class="material-icons">apps</i>
+                </div>
+                <h2>MaterialTheme</h2>
+            </div>
+            <div class="auth-title">
+                <h1>@ViewData["Title"]</h1>
+                <p>Enter your credentials to access your account</p>
+            </div>
+
+        </div>
+    }
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(document).ready(function() {
+            // Add active class to current page in navigation
+            const currentController = '@ViewContext.RouteData.Values["controller"]';
+            const currentAction = '@ViewContext.RouteData.Values["action"]';
+
+            $('.drawer-nav .nav-item a.nav-link').each(function() {
+                const href = $(this).attr('href');
+                if (href && (
+                    href.includes(`/${currentController}/${currentAction}`) ||
+                    (currentAction === 'Index' && href.endsWith(`/${currentController}`))
+                )) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            });
+
+            // Menu toggle functionality
+            $('#menuToggle').click(function() {
+                $('.material-layout').toggleClass('drawer-open');
+            });
+
+            // User dropdown toggle
+            $('#userMenuToggle').click(function(e) {
+                e.stopPropagation();
+                $('#userDropdownMenu').toggleClass('show');
+            });
+
+            // Close dropdown when clicking elsewhere
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.user-dropdown').length) {
+                    $('#userDropdownMenu').removeClass('show');
+                }
+            });
+
+            // Submenu toggle functionality
+            $('.has-submenu > .nav-link').click(function(e) {
+                e.preventDefault();
+                $(this).parent().toggleClass('open');
+                $(this).find('.submenu-icon').text(
+                    $(this).parent().hasClass('open') ? 'expand_less' : 'expand_more'
+                );
+                $(this).next('.submenu').slideToggle(300);
+            });
+
+            // Close drawer when clicking outside on mobile
+            $('.main-content').on('click', function() {
+                if ($(window).width() < 992 && $('.material-layout').hasClass('drawer-open')) {
+                    $('.material-layout').removeClass('drawer-open');
+                }
+            });
+
+            // Automatic drawer behavior based on screen size
+            function handleResize() {
+                if ($(window).width() >= 992) {
+                    $('.material-layout').addClass('drawer-open');
+                } else {
+                    $('.material-layout').removeClass('drawer-open');
+                }
+            }
+
+            // Initial call and resize event
+            handleResize();
+            $(window).resize(handleResize);
+        });
+    </script>
+
 </body>
 </html>

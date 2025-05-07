@@ -2,11 +2,220 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="jumbotron">
-    <h1 class="display-4">Dynamic Application Generator</h1>
-    <p class="lead">Generate ASP.NET Core MVC applications with Authentication and Authorization</p>
-    <hr class="my-4">
-    <p>This tool allows you to create a fully functional ASP.NET Core MVC application with dynamic roles, user registration, and login capabilities.</p>
-    <a class="btn btn-primary btn-lg" asp-controller="Role" asp-action="Index">Manage Roles</a>
-    <a class="btn btn-success btn-lg" asp-controller="Generator" asp-action="Index">Generate Application</a>
+@{
+    ViewBag.Title = "Dashboard";
+    var userName = ViewBag.UserName ?? "User";
+
+    var hour = DateTime.Now.Hour;
+    var greeting = hour < 12 ? "Good morning!" :
+                   hour < 17 ? "Good afternoon!" : "Good evening!";
+    var message = "Transforming ideas into impact — one project at a time.";
+}
+
+
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<link href="~/css/viewcss/homeindex.css" rel="stylesheet" />
+<link href="~/css/addcomman.css" rel="stylesheet" />
+<div class="listsection">
+    <div class="main-container">
+        <div class="dashboard-left mt-4">
+            <section style="text-align:center; padding: 2rem; background-color: #f9f9f9;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 1rem; color: #333;">Meet the Team</h2>
+                <img src="~/images/TeamWorkwebp.jpg" alt="Team Art" style="width:600px; height:400px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+                <p style="margin-top: 1rem; color: #666;">Collaboration is the key to success – explore how we build together.</p>
+            </section>
+
+        </div>
+
+       @*  <div class="dashboard-right">
+            <div class="dashboard-header">
+                <h2>@greeting!, <span id="user-name"></span></h2>
+                <p>@message</p>
+            </div>
+
+            <div class="dashboard-cards">
+               
+            </div>
+
+
+        </div> *@
+    </div>
 </div>
+
+<script>
+    const storedUser = localStorage.getItem("authUser");
+    if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        const name = userData.firstName + " " + userData.lastName;
+        document.getElementById("user-name").textContent = name;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        loadDashboardCounts();
+    });
+
+    var backendUrl = '@ViewData["BackendUrl"]';
+
+    function loadDashboardCounts() {
+        const token = localStorage.getItem("jwtToken");
+
+        fetch(backendUrl + '/api/AppUser/getAll', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("userCount").textContent = data.length;
+        });
+
+        fetch(backendUrl + '/api/Project/getAllByFilter', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("projectCount").textContent = data.data.length;
+        });
+
+        fetch(backendUrl + '/api/client/getAll', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("clientCount").textContent = data.length;
+        });
+    }
+
+    $(document).ready(function () {
+        var notification = $("#notification").kendoNotification({
+            position: {
+                top: 92,
+                right: 83
+            },
+            autoHideAfter: 0, // Disable auto-hide
+            stacking: "down",
+            button: true // Show close button
+        }).data("kendoNotification");
+
+        // Function to show Kendo notification
+        function showNotification(message, type) {
+            notification.show(message, type); // "error", "success", etc.
+        }
+
+        // Function to hide all notifications manually
+        function hideNotification() {
+            notification.hide();
+        }
+
+        // Function to check filters and handle notification
+               function checkFilters() {
+
+        hideNotification();
+
+        setTimeout(function () {
+
+            var selectedFilters = localStorage.getItem('selectedFilters');
+
+            var filters = {};
+
+            if (selectedFilters) {
+
+                try {
+
+                    filters = JSON.parse(selectedFilters);
+
+                } catch (e) {
+
+                    console.error("Invalid JSON in localStorage.");
+
+                }
+
+            }
+
+            // Safely check if client and project are valid objects with id
+
+            const hasClient = filters.client && filters.client.id;
+
+            const hasProject = filters.project && filters.project.id;
+
+            if (!hasClient && !hasProject) {
+
+                showNotification("Please select a client.", "error");
+
+            } else if (hasClient && !hasProject) {
+
+                showNotification("Client selected. Please select a project.", "error");
+
+            } else if (!hasClient && hasProject) {
+
+                showNotification("Project selected. Please select a client.", "error");
+
+            } else {
+
+                hideNotification(); // All good
+
+            }
+
+        }, 1000);
+
+    }
+
+
+
+                // Run check on page load
+        checkFilters();
+
+        // Re-check on dropdown changes
+        $('#navbarClient').change(function () {
+            // Update localStorage with the selected client value
+            var clientId = $(this).val();
+            var selectedFilters = JSON.parse(localStorage.getItem('selectedFilters') || '{}');
+            selectedFilters.client = clientId;
+            localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
+
+            // Check filters again
+            checkFilters();
+        });
+
+        $('#navbarProject').change(function () {
+            // Update localStorage with the selected project value
+            var projectId = $(this).val();
+            var selectedFilters = JSON.parse(localStorage.getItem('selectedFilters') || '{}');
+            selectedFilters.project = projectId;
+            localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
+
+            // Check filters again
+            checkFilters();
+        });
+
+        // Optional: Handle reset functionality if needed
+        function resetFilters() {
+            // Clear localStorage
+            localStorage.removeItem('selectedFilters');
+            // Reset dropdowns to empty
+            $('#navbarClient').val('');
+            $('#navbarProject').val('');
+            // Re-check filters after reset
+            checkFilters();
+        }
+
+        // You can add a reset button or other triggers for reset
+        // Example:
+        $('#resetFiltersBtn').click(function () {
+            resetFilters();
+        });
+    });
+
+</script>

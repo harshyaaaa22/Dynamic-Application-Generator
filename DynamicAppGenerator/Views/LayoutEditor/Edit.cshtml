@@ -1,0 +1,125 @@
+﻿@using DynamicAppGenerator.ViewModels
+@model LayoutEditorViewModel
+@{
+    ViewData["Title"] = Model.IsNew ? "Create Layout" : $"Edit Layout - {Model.Name}";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>@(Model.IsNew ? "Create Layout" : $"Edit Layout - {Model.Name}")</h1>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            @if (!Model.IsNew)
+            {
+                <a asp-action="Preview" asp-route-id="@Model.Id" class="btn btn-info ml-2">Preview</a>
+            }
+        </div>
+    </div>
+	<link href="~/css/layout-editor.css" rel="stylesheet" />
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Layout Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs mb-3" id="editorTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="html-tab" data-toggle="tab" href="#html" role="tab">HTML</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="css-tab" data-toggle="tab" href="#css" role="tab">CSS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="js-tab" data-toggle="tab" href="#js" role="tab">JavaScript</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="editorTabsContent">
+                    <div class="tab-pane fade show active" id="html" role="tabpanel">
+                        <div class="form-group">
+                            <label asp-for="HtmlContent">HTML Content</label>
+                            <textarea asp-for="HtmlContent" class="form-control code-editor" rows="20" data-mode="html"></textarea>
+                            <span asp-validation-for="HtmlContent" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="css" role="tabpanel">
+                        <div class="form-group">
+                            <label asp-for="CssContent">CSS Content</label>
+                            <textarea asp-for="CssContent" class="form-control code-editor" rows="20" data-mode="css"></textarea>
+                            <span asp-validation-for="CssContent" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="js" role="tabpanel">
+                        <div class="form-group">
+                            <label asp-for="JsContent">JavaScript Content</label>
+                            <textarea asp-for="JsContent" class="form-control code-editor" rows="20" data-mode="javascript"></textarea>
+                            <span asp-validation-for="JsContent" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-success btn-lg">Save Layout</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="~/js/layout-editor.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize CodeMirror editors
+            $('.code-editor').each(function() {
+                var mode = $(this).data('mode');
+                var editor = CodeMirror.fromTextArea(this, {
+                    lineNumbers: true,
+                    mode: mode,
+                    theme: 'monokai',
+                    indentWithTabs: false,
+                    indentUnit: 4,
+                    lineWrapping: true,
+                    extraKeys: {"Ctrl-Space": "autocomplete"}
+                });
+
+                // Make editor responsive
+                editor.setSize("100%", 400);
+
+                // Update textarea on editor change
+                editor.on("change", function(instance) {
+                    instance.save();
+                });
+            });
+        });
+    </script>
+}

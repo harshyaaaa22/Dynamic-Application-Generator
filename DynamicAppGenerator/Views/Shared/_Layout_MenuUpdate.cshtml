@@ -1,0 +1,12 @@
+﻿<!-- Navigation menu item to add to your existing _Layout.cshtml -->
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Tools
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" asp-controller="Role" asp-action="Index">Manage Roles</a>
+        <a class="dropdown-item" asp-controller="Generator" asp-action="Index">Generate Application</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" asp-controller="LayoutEditor" asp-action="Index">Edit Layouts</a>
+    </div>
+</li>
